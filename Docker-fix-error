@@ -1,0 +1,22 @@
+WARNING: No swap limit support
+
+1. First, run the command:
+: sudo docker info
+If you receive the output WARNING: No swap limit support , limiting resources has not been
+enabled by default.
+
+2. To add this option, edit the grub conguration le. Open the le in a text editor of your choice (we
+are using nano)
+: sudo nano /etc/default/grub
+
+3. Then, add the following line:
+GRUB_CMDLINE_LINUX="cdgroup_enable=memory swapaccount=1"
+
+4. Save the changes and exit the file.
+
+5. Then, update the grub conguration with the command:
+: sudo update-grub
+
+6. Finally, reboot your machine for the changes to take place.
+
+7. To verify you have successfully enabled the given Docker feature by rerunning the : docker info
