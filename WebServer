@@ -1,0 +1,339 @@
+--------------------Inti---------------------------
+sudo apt update
+hostname -I
+curl -4 icanhazip.com
+
+
+service php7.2-fpm restart
+
+
+hostname xxx
+
+hostname kai_backT
+
+timedatectl
+
+timedatectl set-timezone Asia/Bangkok
+-----------------start up at boot------------------
+sudo systemctl enable nginx
+sudo pm2 save
+
+
+---------------  login with out KEY --------------- 
+
+sudo nano /etc/ssh/sshd_config
+PasswordAuthentication yes
+PermitRootLogin yes
+sudo service sshd restart
+sudo service ssh restart
+
+-------------- Access keys Bitbucket ----------------
+ssh-keygen
+cat ~/.ssh/id_rsa.pub
+cd ~/
+nano ~/.ssh/authorized_keys
+Setting > Access keys > add Keys > Enter
+clear
+
+
+--------------- resizing a volume------------
+
+lsblk
+
+sudo growpart /dev/xvda1 1
+
+lsblk
+
+
+df -h
+
+sudo resize2fs /dev/xvda1
+
+df -h 
+
+--------------- git -------------------------
+
+mysqldump -u root -pkittichai@gritworld.co.th wordpress > /var/www/wordpress/$(date +%Y%m%d).sql
+
+git config --global user.name "kittichai_Sa"
+
+git config --global user.email "kittichai@gritworld.co.th"
+
+git clone 
+
+git init
+
+git status
+
+git add .
+
+git status
+
+git commit -m " test Node: 12.15.0 "
+
+git push
+
+git pull origin master
+
+git remote remove origin
+
+git push -f origin master
+
+--------------- zip file -------------------------
+
+install zip
+
+sudo apt-get install zip
+Zip your folder:
+
+zip -r {filename.zip} {foldername}
+
+sudo apt-get install unzip
+
+unzip xxx.zip
+
+
+
+--------------- mysql-server -------------------------
+
+// install 
+apt-get install mysql-server
+
+
+// uninstall and remove all MySQL packages:
+apt-get remove -y mysql-*
+
+
+$ sudo apt-get remove --purge mysql-server mysql-client mysql-common -y
+$ sudo apt-get autoremove -y
+$ sudo apt-get autoclean
+Remove the MySQL folder:
+
+$ rm -rf /etc/mysql
+Delete all MySQL files on your server:
+
+$ sudo find / -iname 'mysql*' -exec rm -rf {} \;
+
+
+
+// set_root_pass
+sudo mysql
+SELECT user,authentication_string,plugin,host FROM mysql.user;
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'i-04f21df59aafcde40'; 
+FLUSH PRIVILEGES;
+SELECT user,authentication_string,plugin,host FROM mysql.user;
+
+//set security
+mysql_secure_installation
+
+//test mysql
+mysqladmin -u root -p version
+
+// set_user_pass
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'i-0f8452153f8b41c70';  // set_user_pass
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost' WITH GRANT OPTION;
+
+
+// check time_zone
+SELECT @@global.time_zone, @@session.time_zone; //check Time 
+
+5. Create new database
+----
+Login to mysql
+$ mysql -u root -p
+
+Show databases
+$ show databases;
+
+Create new database
+$ create database jspdb;
+$ use jspdb
+$ show tables;
+
+6. Import table to database
+---
+Copy sql file from local to server
+$ scp -C -r /c/Users/samit/product.sql root@66.42.49.49:/tmp/
+
+Logout form mysql
+$ exit;
+
+Import table to database
+mysql -u root -p jspdb (เครือ่งหมายน้อยกว่า) product.sql
+
+
+//moniter
+
+tail -f /var/log/syslog
+
+
+
+// BackUP
+
+nano backup.sh
+
+chmod 700 backup.sh
+
+cd ~/backupfolder && ./backup.sh
+
+mysqldump -u root -p8fdbe891241e4bd587f6889656fd6cf8 T3Tstudio > /var/www/wordpress/$(date +%Y%m%d).sql
+
+40 11 * * * cd ~ && ./backup.sh
+
+mysqldump -uroot -hlocalhost -pgrittech186 estateflow_db | gzip > /my_backup/db/backup_`date +\%y\%m\%d`.sql.gz
+
+
+
+
+//moniter
+
+tail -f /var/log/syslog
+
+timedatectl set-timezone Asia/Bangkok
+
+hostnamectl set-hostname
+
+
+// BackUP
+
+nano backup.sh
+
+#!/bin/bash
+mysqldump -u root -pi-0b1f919b0d4eebaec 3.0.2 > /root/db/database-$(date +%Y%m%d).sql
+
+
+chmod 700 backup.sh
+
+cd ~/backupfolder && ./backup.sh
+
+
+
+crontab -e 
+
+45 04 * * 0 cd ~ && ./backup.sh
+
+crontab -l
+
+
+
+--------------- Disk MN -------------------------
+
+
+Disk /dev/nvme0n1: 500 GiB, 536870912000 bytes, 1048576000 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+/dev/nvme0n1
+
+
+
+
+
+[root@ezylinux ~]# echo "LABEL=/test1 /test1 ext3 defaults 1 2" >>/etc/fstab
+
+echo "LABEL=/vdo /vdo ext3 defaults 1 2" >>/etc/fstab
+
+
+
+
+
+
+
+
+--------------- wordpress -------------------------
+ 
+@ini_set( 'upload_max_filesize' , '128M' );
+@ini_set( 'post_max_size', '128M');
+@ini_set( 'memory_limit', '256M' );
+@ini_set( 'max_execution_time', '1000' );
+@ini_set( 'max_input_time', '180' );
+
+service php7.2-fpm restart
+
+	sendfile on;
+	#
+	client_max_body_size 100m; # Little more of 0.1GB
+    client_body_timeout 120;
+    client_header_timeout 120;
+    client_body_buffer_size 16K;
+    
+	#
+	tcp_nopush on;
+	tcp_nodelay on;
+	keepalive_timeout 120;
+	types_hash_max_size 2048;
+	# server_tokens off;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+nginx -t
+
+service nginx restart
+
+
+UPDATE wp_options SET option_value = replace(option_value, 'oldurl', 'newurl') WHERE option_name = 'home' OR option_name = 'siteurl';
+
+UPDATE wp_posts SET guid = replace(guid, 'oldurl','newurl');
+
+UPDATE wp_posts SET post_content = replace(post_content, 'oldurl', 'newurl');
+
+UPDATE wp_postmeta SET meta_value = replace(meta_value,'oldurl','newurl');
+
+
+
+
+image: atlassian/default-image:2
+
+pipelines:
+  default:
+    - step:
+        script:
+          - echo "SV_test"
+          - ssh -tt root@3.0.249.74 << EOF
+          - cd /var/www/2dev
+          - fetch --all
+          - git reset --hard origin/master
+          - git pull origin master
+          - exit 0
+          - EOF
+
+#        - echo "SV_1"
+#          - ssh -tt root@13.251.106.71 << EOF
+#          - cd /var/www/2dev
+#          #- fetch --all
+#          - git reset --hard origin/master
+#          - git pull origin master
+#          - exit 0
+#          - EOF
+
+#        - echo "SV_2"
+#          - ssh -tt root@18.141.162.223 << EOF
+#          - cd /var/www/2dev
+#          #- fetch --all
+#          - git reset --hard origin/master
+#          - git pull origin master
+#          - exit 0
+#          - EOF
+
+#          - echo "SV_3"
+#          - ssh -tt root@18.141.212.196 << EOF
+#          - cd /var/www/2dev
+#          #- fetch --all
+#          - git reset --hard origin/master
+#          - git pull origin master
+#          - exit 0
+#          - EOF
+
+
+___________________ nginx ___________________________
+
+ # define error page
+    error_page 404 = @notfound;
+
+    # error page location redirect 301
+    location @notfound {
+        return 301 /;
+    }
